@@ -1,1 +1,3 @@
 items.Example_Block.name=Example Block
+items.Modified_Weapon_Sword_Adamantite.name = My Red Sword
+items.Modified_Weapon_Sword_Adamantite.description = This is a cool modifier \n[TMP] Consumes <item is="Ingredient_Ice_Essence"/>.\n\n<color is="#ccaa00">Work in Progress</color>

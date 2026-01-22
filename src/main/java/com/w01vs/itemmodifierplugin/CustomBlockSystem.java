@@ -14,6 +14,7 @@ import com.hypixel.hytale.server.core.modules.entity.damage.DamageModule;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageSystems;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatMap;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatsSystems;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +36,7 @@ public class CustomBlockSystem extends DamageEventSystem implements EntityStatsS
         return DamageModule.get().getInspectDamageGroup();
     }
 
-    final static Query<EntityStore> QUERY = Query.and(DamageDataComponent.getComponentType(), EntityStatMap.getComponentType());
+    final static Query<EntityStore> QUERY = Query.and(DamageDataComponent.getComponentType(), EntityStatMap.getComponentType(), PlayerRef.getComponentType());
 
     @Override
     public void handle(int var1, @NotNull ArchetypeChunk<EntityStore> var2, @NotNull Store<EntityStore> var3, @NotNull CommandBuffer<EntityStore> var4, @NotNull Damage var5) {
@@ -58,3 +59,4 @@ public class CustomBlockSystem extends DamageEventSystem implements EntityStatsS
         return QUERY;
     }
 }
+
