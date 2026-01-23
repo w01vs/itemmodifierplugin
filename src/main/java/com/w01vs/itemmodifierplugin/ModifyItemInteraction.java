@@ -40,33 +40,21 @@ public class ModifyItemInteraction extends ChoiceInteraction {
         Player playerComponent = store.getComponent(ref, Player.getComponentType());
         PageManager pageManager = playerComponent.getPageManager();
         ItemStack itemStack = this.itemContext.getItemStack();
-        double itemStackDurability = itemStack.getDurability();
-        double itemStackMaxDurability = itemStack.getMaxDurability();
-        double ratioAmountRepaired = 1.0 - itemStackDurability / itemStackMaxDurability;
-        double newMaxDurability = MathUtil.floor(itemStackMaxDurability - itemStack.getItem().getMaxDurability() * (this.repairPenalty * ratioAmountRepaired));
-        if (itemStackDurability >= newMaxDurability) {
-            playerRef.sendMessage(Message.translation("server.general.repair.penaltyTooBig").color("#ff5555"));
-            pageManager.setPage(ref, store, Page.None);
-        } else {
-            if (newMaxDurability <= 10.0) {
-                newMaxDurability = 10.0;
-                playerRef.sendMessage(Message.translation("server.general.repair.tooLowDurability").color("#ff5555"));
-            }
-        }
+
         ItemModifier[] newMetadata;
         ItemModifier newModifier;
         ItemModifier[] metadata = itemStack.getFromMetadataOrNull(new KeyedCodec<>(ItemModifier.codecKey, new ArrayCodec<ItemModifier>( ItemModifier.CODEC, ItemModifier[]::new)));
         if(metadata != null) {
             ArrayList<ItemModifier> itemModifiers = new ArrayList<>(Arrays.stream(metadata).toList());
             // call function to get a new modifier and append it
-            newModifier = new ItemModifier();
+            newModifier = new ItemModifier("mod:damage:flat_phys", 2);
             itemModifiers.add(newModifier);
 
             newMetadata = itemModifiers.toArray(new ItemModifier[0]);
         }
         else {
             newMetadata = new ItemModifier[1];
-            newMetadata[0] = new ItemModifier("damage:flat_phys", 2);
+            newMetadata[0] = new ItemModifier("mod:damage:flat_phys", 2);
         }
 
         ItemStack newItemStack = itemStack
@@ -79,7 +67,7 @@ public class ModifyItemInteraction extends ChoiceInteraction {
             pageManager.setPage(ref, store, Page.None);
         } else {
             Message newItemStackMessage = Message.translation(newItemStack.getItem().getTranslationKey());
-            playerRef.sendMessage(Message.raw("Succesfully added"));
+            playerRef.sendMessage(Message.raw("Succesfully added modifier"));
             pageManager.setPage(ref, store, Page.None);
         }
     }

@@ -44,7 +44,7 @@ public class ItemModifierPlugin extends JavaPlugin {
         LOGGER.atInfo().log("Hello from %s version %s", this.getName(), this.getManifest().getVersion().toString());
     }
 
-    private ComponentType<EntityStore, ItemModifierComponent> modifierComponentType;
+    public static ComponentType<EntityStore, ItemModifierComponent> modifierComponentType;
 
     protected void setup() {
         this.getCommandRegistry().registerCommand(new OpenModifierUICommand());
@@ -61,6 +61,7 @@ public class ItemModifierPlugin extends JavaPlugin {
     protected void start() {
         this.getCodecRegistry(Interaction.CODEC).register("OpenModifierWindow", OpenModifierBenchPageInteraction.class, OpenModifierBenchPageInteraction.CODEC);
         this.getEntityStoreRegistry().registerSystem(new CustomBlockSystem());
+        this.getEntityStoreRegistry().registerSystem(new DamageModifier());
         this.getEventRegistry().registerGlobal(AddPlayerToWorldEvent.class, ItemModifierPlugin::onPlayerAddToWorld);
     }
 

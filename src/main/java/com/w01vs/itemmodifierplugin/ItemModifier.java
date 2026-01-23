@@ -2,14 +2,7 @@ package com.w01vs.itemmodifierplugin;
 
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
-import com.hypixel.hytale.component.Holder;
-import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
-import java.util.ArrayList;
 
 public class ItemModifier {
     public static final BuilderCodec<ItemModifier> CODEC = BuilderCodec.builder(ItemModifier.class, ItemModifier::new)
@@ -25,17 +18,23 @@ public class ItemModifier {
 
     public static final String codecKey = "ItemModifiers";
 
-    private String id = "unknown:modifier";
-    private int minValue = 0;
-    private int maxValue = 0;
+    private String id;
+    private int minValue;
+    private int maxValue;
     // if hasRange = false -> minValue is used.
-    private boolean hasRange = false;
+    private boolean hasRange;
 
-    public ItemModifier() {}
+    public ItemModifier() {
+        id = "unknown";
+        minValue = 0;
+        maxValue = 0;
+        hasRange = false;
+    }
 
     public ItemModifier(String id, int value) {
         this.id = id;
         minValue = value;
+        maxValue = 0;
         hasRange = false;
     }
 
@@ -46,19 +45,22 @@ public class ItemModifier {
         hasRange = true;
     }
 
-    public String getId() {
-        return id;
+    public String getId() { return id; }
+
+    public int getMinValue() { return minValue; }
+
+    public int getMaxValue() { return maxValue; }
+
+    public boolean getHasRange() { return hasRange; }
+
+    protected ItemModifier(ItemModifier other) {
+        this.id = other.id;
+        this.minValue = other.minValue;
+        this.maxValue = other.maxValue;
+        this.hasRange = other.hasRange;
     }
 
-    public int getMinValue() {
-        return minValue;
-    }
-
-    public int getMaxValue() {
-        return maxValue;
-    }
-
-    public boolean getHasRange() {
-        return hasRange;
+    public ItemModifier clone() {
+        return new ItemModifier(this);
     }
 }

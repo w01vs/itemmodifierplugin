@@ -11,35 +11,48 @@ import java.util.Collections;
 import java.util.List;
 
 public class ItemModifierComponent implements Component<EntityStore> {
-    private final List<ItemModifier> modifiers = new ArrayList<>();
+    private List<ItemModifier> modifiers = new ArrayList<>();
     private static final int MAX_MODIFIERS = 3;
-    private String selectedOption = "none";
 
     public static final BuilderCodec<ItemModifierComponent> CODEC = BuilderCodec
             .builder(ItemModifierComponent.class, ItemModifierComponent::new)
-            .append(
-                    new KeyedCodec<>("SelectedOption", BuilderCodec.STRING),
-                    (comp, val) -> comp.selectedOption = val,
-                    comp -> comp.selectedOption
-            )
-            .add()
             .build();
 
-    public void addModifier(ItemModifier mod) {
-        if (modifiers.size() < MAX_MODIFIERS) {
+    public boolean addModifier(ItemModifier mod) {
+        boolean alreadyPresent = modifiers.stream().anyMatch(m -> m.getId().equals(mod.getId()));
+        if (modifiers.size() < MAX_MODIFIERS && !alreadyPresent) {
             modifiers.add(mod);
+            return true;
         }
+        return false;
+    }
+
+    public boolean removeModifier(String id) {
+        for(ItemModifier mod : modifiers) {
+            if(mod.getId().equals(id)) {
+                modifiers.remove(mod);
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<ItemModifier> getModifiers() {
         return Collections.unmodifiableList(modifiers);
     }
 
-    @Override
-    public @Nullable Component<EntityStore> clone() {
-        return null;
+    public ItemModifierComponent() {}
+
+    protected ItemModifierComponent(ItemModifierComponent other) {
+        this.modifiers = new ArrayList<ItemModifier>(other.modifiers);
     }
 
-    // You'll need to implement serialization methods here later
-    // so the stats stay on the item after a restart.
+    @Override
+    public @Nullable Component<EntityStore> clone() {
+        ItemModifierComponent other = new ItemModifierComponent();
+        for(ItemModifier mod : modifiers) {
+            other.addModifier(mod.clone());
+        }
+        return other;
+    }
 }
