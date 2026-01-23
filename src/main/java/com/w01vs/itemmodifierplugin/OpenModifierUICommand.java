@@ -44,15 +44,13 @@ public class OpenModifierUICommand extends AbstractPlayerCommand {
                            @Nonnull PlayerRef playerRef,
                            @Nonnull World world) {
         Player player = store.getComponent(ref, Player.getComponentType());
-//        player.getPageManager().openCustomPage(
-//                ref,
-//                store,
-//                new ModifierPage(playerRef, player.getInventory().getCombinedArmorHotbarUtilityStorage(), 0.1));
-        CombinedItemContainer targetInventory = player.getInventory().getCombinedHotbarFirst();
-        ItemContainer targetItemContainer = targetInventory;
+        player.getPageManager().openCustomPage(
+                ref,
+                store,
+                new ModifierPage(playerRef, player.getInventory().getCombinedArmorHotbarUtilityStorage(), 0.1));
+//        CombinedItemContainer targetInventory = player.getInventory().getCombinedHotbarFirst();
+//        ItemContainer targetItemContainer = targetInventory;
 //        player.getPageManager().setPageWithWindows(ref, store, Page.Bench, true, new ContainerWindow(targetItemContainer));
-
-        player.getPageManager().openCustomPageWithWindows(ref, store, new ModifierUI(playerRef, CustomPageLifetime.CanDismiss), new MemoriesWindow());
         ctx.sendMessage(Message.raw("Opening Modifier UI..."));
     }
 }

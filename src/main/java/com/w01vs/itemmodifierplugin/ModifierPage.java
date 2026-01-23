@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 
 public class ModifierPage extends ChoiceBasePage {
     public ModifierPage(@Nonnull PlayerRef playerRef, @Nonnull ItemContainer itemContainer, double repairPenalty) {
-        super(playerRef, getItemElements(itemContainer, repairPenalty), "Pages/ItemRepairPage.ui");
+        super(playerRef, getItemElements(itemContainer, repairPenalty), "ModifyItemPage.ui");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ModifierPage extends ChoiceBasePage {
         } else {
             commandBuilder.append(this.getPageLayout());
             commandBuilder.clear("#ElementList");
-            commandBuilder.appendInline("#ElementList", "Label { Text: %customUI.itemRepairPage.noItems; Style: (Alignment: Center); }");
+            commandBuilder.appendInline("#ElementList", "Label { Text: %No items to modify; Style: (Alignment: Center); }");
         }
     }
 
@@ -41,7 +41,7 @@ public class ModifierPage extends ChoiceBasePage {
 
         for (short slot = 0; slot < itemContainer.getCapacity(); slot++) {
             ItemStack itemStack = itemContainer.getItemStack(slot);
-            if (!ItemStack.isEmpty(itemStack) && !itemStack.isUnbreakable() && !(itemStack.getDurability() >= itemStack.getMaxDurability())) {
+            if (!ItemStack.isEmpty(itemStack) && !itemStack.isUnbreakable() && itemStack.getMaxDurability() > 0) {
                 ItemContext itemContext = new ItemContext(itemContainer, slot, itemStack);
                 elements.add(new ModifyItemElement(itemStack, new ModifyItemInteraction(itemContext, repairPenalty)));
             }
