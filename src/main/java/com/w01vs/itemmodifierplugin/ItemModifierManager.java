@@ -10,18 +10,21 @@ import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageCalculatorSystems;
+import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.combat.DamageCalculator;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ItemModifierManager {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     public static ItemModifier getRandomModifier() {
-        ItemModifier mod = AssetRegistry.getAssetStore(ItemModifier.class).getAssetMap().getAsset("mod:damage:flat_phys");
+        ItemModifier mod = AssetRegistry.getAssetStore(ItemModifier.class).getAssetMap().getAsset("flat_phys");
         // mod.reroll();
         return mod;
     }
@@ -41,16 +44,28 @@ public class ItemModifierManager {
 //            Ref<EntityStore> defender,
             DamageCalculator calculator,
             DamageCalculatorSystems.DamageSequence sequence,
-            float currentDamage
+            float currentDamage,
+            float initialDamage,
+            int damageCauseIndex
             ) {
         Player player = attacker.getStore().getComponent(attacker, Player.getComponentType());
         assert player != null;
         ItemStack heldItem = player.getInventory().getItemInHand();
         List<ItemModifier> modifiers = getModifiers(heldItem);
 
+        float flat = 0;
+        float multi = 1;
         // calculate the additive/multiplicative bonuses
+        for(ItemModifier mod : modifiers) {
+            Map<String, ValueProvider> multiMap = mod.getMultiplicative();
+            String damageType = DamageCause.getAssetMap().getAsset(damageCauseIndex).getId();
+            multi += multiMap.getOrDefault(damageType, new ValueProvider()).get();
 
-        return new ItemModifierEffect(2, 1);
+            Map<String, ValueProvider> addMap = mod.getAdditive();
+            flat += addMap.getOrDefault(damageType, new ValueProvider()).get() * (currentDamage / initialDamage);
+        }
+
+        return new ItemModifierEffect(flat, multi);
     }
 
     public record ItemModifierEffect(float additive, float multiplicative) {

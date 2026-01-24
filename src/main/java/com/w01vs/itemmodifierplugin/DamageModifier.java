@@ -63,11 +63,10 @@ public class DamageModifier extends DamageEventSystem {
 
             Player attackerPlayer = commandBuffer.getComponent(attackerRef, Player.getComponentType());
             if(attackerPlayer != null) {
-                int typeIndex = damage.getDamageCauseIndex();
                 DamageCalculatorSystems.DamageSequence seq = damage.getMetaObject(DamageCalculatorSystems.DAMAGE_SEQUENCE);
                 DamageCalculator calc = seq.getDamageCalculator();
                 // damage calc and sequence hold the big boi data; might not need it since ratio's will fix most stuff
-                ItemModifierManager.ItemModifierEffect effect = ItemModifierManager.applyModifiers(attackerRef, calc, seq, damage.getAmount());
+                ItemModifierManager.ItemModifierEffect effect = ItemModifierManager.applyModifiers(attackerRef, calc, seq, damage.getAmount(), damage.getInitialAmount(), damage.getDamageCauseIndex());
                 damage.setAmount(effect.applyTo(damage.getAmount()));
             }
         }
