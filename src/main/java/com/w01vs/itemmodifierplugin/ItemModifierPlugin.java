@@ -1,5 +1,8 @@
 package com.w01vs.itemmodifierplugin;
 
+import com.hypixel.hytale.assetstore.AssetLoadResult;
+import com.hypixel.hytale.assetstore.AssetRegistry;
+import com.hypixel.hytale.assetstore.AssetStore;
 import com.hypixel.hytale.builtin.creativehub.CreativeHubPlugin;
 import com.hypixel.hytale.builtin.creativehub.config.CreativeHubEntityConfig;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -9,6 +12,7 @@ import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.entity.damage.DamageDataComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
@@ -28,11 +32,16 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ItemModifierPlugin extends JavaPlugin {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+
+
 
     public static final PluginManifest MANIFEST = PluginManifest.corePlugin(ItemModifierPlugin.class)
             .depends(DamageModule.class) // Crucial for DamageDataComponent
@@ -62,5 +71,6 @@ public class ItemModifierPlugin extends JavaPlugin {
                 ItemModifierComponent.CODEC
         );
         this.getEntityStoreRegistry().registerSystem(new DamageModifier());
+        this.getAssetRegistry().register(new ModifierAssetStore());
     }
 }

@@ -1,3 +1,26 @@
 {
   "$Comment": "This damage type exists to facilitate sub types"
 }
+
+
+{
+  "id": "mod:damage:flat_phys",
+    "additive":
+    {
+      "phys":
+      {
+        "range": false,
+        "minValue": 5
+      }
+    }
+}{
+  "id": "mod:damage:flat_phys",
+  "additive":
+  {
+    "phys":
+    {
+      "range": false,
+      "minValue": 5
+    }
+  }
+}

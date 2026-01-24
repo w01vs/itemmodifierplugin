@@ -1,0 +1,9 @@
+{
+  "Id": "mod:damage:flat_phys",
+  "Additive": {
+    "phys": {
+      "Value": 2.0
+    }
+  },
+  "Multiplicative": {}
+}

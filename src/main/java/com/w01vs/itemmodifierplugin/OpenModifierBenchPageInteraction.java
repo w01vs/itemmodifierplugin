@@ -59,12 +59,8 @@ public class OpenModifierBenchPageInteraction extends SimpleBlockInteraction {
         Player playerComponent = commandBuffer.getComponent(ref, Player.getComponentType());
         PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
         if (playerComponent != null && playerRef != null) {
-//            playerComponent.getPageManager().openCustomPage(
-//                    ref,
-//                    store,
-//                    new ModifierUI(playerRef, CustomPageLifetime.CanDismiss));
 
-            MemoriesWindow window = new MemoriesWindow();//new ModifierWindow(WindowType.StructuralCrafting, targetBlock, world);
+            MemoriesWindow window = new MemoriesWindow();
             playerComponent.getPageManager().setPageWithWindows(ref, store, Page.Bench, true, window);
             LOGGER.atInfo().log("Opening a UI window");
         }

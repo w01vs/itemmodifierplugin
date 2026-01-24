@@ -5,6 +5,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.util.MathUtil;
 import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.Message;
@@ -22,6 +23,8 @@ import org.bson.BsonDocument;
 
 
 import javax.annotation.Nonnull;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.List;
 public class ModifyItemInteraction extends ChoiceInteraction {
     protected final ItemContext itemContext;
     protected final double repairPenalty;
+    private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     public ModifyItemInteraction(ItemContext itemContext, double repairPenalty) {
         this.itemContext = itemContext;
@@ -47,14 +51,15 @@ public class ModifyItemInteraction extends ChoiceInteraction {
         if(metadata != null) {
             ArrayList<ItemModifier> itemModifiers = new ArrayList<>(Arrays.stream(metadata).toList());
             // call function to get a new modifier and append it
-            newModifier = new ItemModifier("mod:damage:flat_phys", 2);
+//            newModifier = new ItemModifier("mod:damage:flat_phys", "phys", ItemModifier.ModifierType.ADDITIVE, 2f);
+            newModifier = ItemModifierManager.getRandomModifier();
             itemModifiers.add(newModifier);
 
             newMetadata = itemModifiers.toArray(new ItemModifier[0]);
         }
         else {
             newMetadata = new ItemModifier[1];
-            newMetadata[0] = new ItemModifier("mod:damage:flat_phys", 2);
+            newMetadata[0] = newModifier = ItemModifierManager.getRandomModifier();
         }
 
         ItemStack newItemStack = itemStack

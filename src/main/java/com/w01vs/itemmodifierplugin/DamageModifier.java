@@ -12,6 +12,7 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.random.RandomExtra;
 import com.hypixel.hytale.server.core.entity.LivingEntity;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.meta.MetaKey;
 import com.hypixel.hytale.server.core.modules.entity.AllLegacyLivingEntityTypesQuery;
@@ -27,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -55,42 +58,17 @@ public class DamageModifier extends DamageEventSystem {
             @NotNull Damage damage
     ) {
         Damage.Source source = damage.getSource();
-        int c = commandBuffer.getStore().getEntityCountFor(ItemModifierPlugin.modifierComponentType);
-        LOGGER.atWarning().log(c + " entities in store with a modifier component");
         if(source instanceof Damage.EntitySource entitySource) {
             Ref<EntityStore> attackerRef = entitySource.getRef();
 
             Player attackerPlayer = commandBuffer.getComponent(attackerRef, Player.getComponentType());
-
-            ItemStack heldItem = attackerPlayer.getInventory().getItemInHand();
-
-            // get metadata from the modifiers and apply
-            int typeIndex = damage.getDamageCauseIndex();
-            DamageCalculatorSystems.DamageSequence seq = damage.getMetaObject(DamageCalculatorSystems.DAMAGE_SEQUENCE);
-            DamageCalculator calc = seq.getDamageCalculator();
-            // damage calc and sequence hold the big boi data; might not need it since ratio's will fix most stuff
-            // e.g. amount / initialamount scaling applied to any bonuses i do
-
-
-
-            ItemModifierComponent itemModifierComponent =  commandBuffer.getComponent(attackerRef, ItemModifierPlugin.modifierComponentType);
-            if (itemModifierComponent != null) {
-                Optional < ItemModifier > modOption = itemModifierComponent.getModifiers().stream().filter(m -> m.getId().equals("mod:damage:flat_phys")).findFirst();
-
-                if (modOption.isPresent()) {
-                    ItemModifier mod = modOption.get();
-                    float startDamage = damage.getInitialAmount();
-                    LOGGER.atInfo().log("Initial damage of the hit was: " + startDamage);
-                    float currentDamage = damage.getAmount();
-                    LOGGER.atInfo().log("Damage with systems effect was: " + currentDamage);
-                    float addedDamage = mod.getMinValue();
-                    LOGGER.atInfo().log("Damage with systems effect was: " + addedDamage);
-                    float newDamage = currentDamage + addedDamage;
-                    LOGGER.atInfo().log("Damage with systems effect was: " + newDamage);
-                    damage.setAmount(newDamage);
-                }
-            } else {
-                LOGGER.atWarning().log("No modifier component found");
+            if(attackerPlayer != null) {
+                int typeIndex = damage.getDamageCauseIndex();
+                DamageCalculatorSystems.DamageSequence seq = damage.getMetaObject(DamageCalculatorSystems.DAMAGE_SEQUENCE);
+                DamageCalculator calc = seq.getDamageCalculator();
+                // damage calc and sequence hold the big boi data; might not need it since ratio's will fix most stuff
+                ItemModifierManager.ItemModifierEffect effect = ItemModifierManager.applyModifiers(attackerRef, calc, seq, damage.getAmount());
+                damage.setAmount(effect.applyTo(damage.getAmount()));
             }
         }
 
