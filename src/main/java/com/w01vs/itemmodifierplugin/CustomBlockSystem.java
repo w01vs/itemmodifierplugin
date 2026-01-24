@@ -39,19 +39,12 @@ public class CustomBlockSystem extends DamageEventSystem implements EntityStatsS
     final static Query<EntityStore> QUERY = Query.and(DamageDataComponent.getComponentType(), EntityStatMap.getComponentType(), PlayerRef.getComponentType());
 
     @Override
-    public void handle(int var1, @NotNull ArchetypeChunk<EntityStore> var2, @NotNull Store<EntityStore> var3, @NotNull CommandBuffer<EntityStore> var4, @NotNull Damage var5) {
-    }
-
-    @Override
-    public void handleInternal(
-            int index,
-            @Nonnull ArchetypeChunk<EntityStore> chunk,
-            @Nonnull Store<EntityStore> store,
-            @Nonnull CommandBuffer<EntityStore> cb,
-            @Nonnull Damage damage) {
+    public void handle(int index, @NotNull ArchetypeChunk<EntityStore> archetypeChunk, @NotNull Store<EntityStore> store, @NotNull CommandBuffer<EntityStore> commandBuffer, @NotNull Damage damage) {
         damage.putMetaObject(Damage.STAMINA_DRAIN_MULTIPLIER, Float.valueOf(0.0f));
         LOGGER.atInfo().log("My custom block system handled an event");
     }
+
+
 
     @Nonnull
     @Override

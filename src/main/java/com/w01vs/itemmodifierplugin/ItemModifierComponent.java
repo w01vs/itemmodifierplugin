@@ -3,6 +3,7 @@ package com.w01vs.itemmodifierplugin;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
+import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class ItemModifierComponent implements Component<EntityStore> {
     private List<ItemModifier> modifiers = new ArrayList<>();
+    private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static final int MAX_MODIFIERS = 3;
 
     public static final BuilderCodec<ItemModifierComponent> CODEC = BuilderCodec
@@ -24,6 +26,7 @@ public class ItemModifierComponent implements Component<EntityStore> {
             modifiers.add(mod);
             return true;
         }
+        LOGGER.atInfo().log("Failed to add: " + mod.getId() + " because: alreadyPresent:" + alreadyPresent + " or size: " + (modifiers.size() > MAX_MODIFIERS));
         return false;
     }
 
