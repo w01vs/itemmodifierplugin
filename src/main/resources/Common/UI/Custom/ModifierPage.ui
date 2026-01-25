@@ -13,6 +13,20 @@ $C.@DecoratedContainer {
     }
   }
 
+  Button #AddModifierButton {
+  Style: (
+      Hovered: (
+        Background: #000000(0.2),
+      )
+    );
+      Label #Name {
+        Text: "Apply random modifier";
+        Padding: (Horizontal: 10, Vertical: 5);
+        Style: (RenderBold: false);
+        FlexWeight: 1;
+      }
+  }
+
   Group #ModifierContent {
   LayoutMode: Right;
   Padding: (Left: 10, Top: 40, Right: 10);

@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.combat.DamageCalculator;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.Map;
 public class ItemModifierManager {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    public static ItemModifier getRandomModifier() {
+    public @Nullable static ItemModifier getRandomModifier() {
         ItemModifierTemplate mod = AssetRegistry.getAssetStore(ItemModifierTemplate.class).getAssetMap().getAsset("flat_phys");
+        if(mod == null) return null;
+        ItemModifier finalMod = new ItemModifier(mod);
         // mod.reroll();
-        return mod;
+        return finalMod;
     }
 
     private static List<ItemModifier> getModifiers(ItemStack item) {

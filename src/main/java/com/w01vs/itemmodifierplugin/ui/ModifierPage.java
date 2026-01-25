@@ -29,7 +29,7 @@ public class ModifierPage extends ChoiceBasePage {
         } else {
             commandBuilder.append(this.getPageLayout());
             commandBuilder.clear("#ElementList");
-            commandBuilder.appendInline("#ElementList", "Label { Text: %No items to modify; Style: (Alignment: Center); }");
+            commandBuilder.appendInline("#ElementList", "Label { Text: \"No items to modify\"; Style: (Alignment: Center); }");
         }
     }
 
@@ -44,6 +44,7 @@ public class ModifierPage extends ChoiceBasePage {
                 elements.add(new ModifyItemElement(itemStack, new ModifyItemInteraction(itemContext)));
             }
         }
+
 
         return elements.toArray(ChoiceElement[]::new);
     }

@@ -37,36 +37,7 @@ public class ModifyItemInteraction extends ChoiceInteraction {
         PageManager pageManager = playerComponent.getPageManager();
         ItemStack itemStack = this.itemContext.getItemStack();
 
-        pageManager.openCustomPage(ref, store, new ModifierPageFull(playerRef, itemContext.getItemStack()));
-
-//        ItemModifier[] newMetadata;
-//        ItemModifier newModifier;
-//        ItemModifier[] metadata = itemStack.getFromMetadataOrNull(new KeyedCodec<>(ItemModifier.codecKey, new ArrayCodec<ItemModifier>( ItemModifier.CODEC, ItemModifier[]::new)));
-//        if(metadata != null) {
-//            ArrayList<ItemModifier> itemModifiers = new ArrayList<>(Arrays.stream(metadata).toList());
-//            newModifier = ItemModifierManager.getRandomModifier();
-//            itemModifiers.add(newModifier);
-//
-//            newMetadata = itemModifiers.toArray(new ItemModifier[0]);
-//        }
-//        else {
-//            newMetadata = new ItemModifier[1];
-//            newMetadata[0] = newModifier = ItemModifierManager.getRandomModifier();
-//        }
-//
-//        ItemStack newItemStack = itemStack
-//                .withMetadata(new KeyedCodec<>(ItemModifier.codecKey, new ArrayCodec<ItemModifier>( ItemModifier.CODEC, ItemModifier[]::new)), newMetadata);
-//        ItemStackSlotTransaction replaceTransaction = this.itemContext
-//                .getContainer()
-//                .replaceItemStackInSlot(this.itemContext.getSlot(), itemStack, newItemStack);
-//        if (!replaceTransaction.succeeded()) {
-//            playerRef.sendMessage(Message.raw("Failed to modify item").color("#eb4034"));
-//            pageManager.setPage(ref, store, Page.None);
-//        } else {
-//            Message newItemStackMessage = Message.translation(newItemStack.getItem().getTranslationKey());
-//            playerRef.sendMessage(Message.raw("Succesfully added modifier"));
-//            pageManager.setPage(ref, store, Page.None);
-//        }
+        pageManager.openCustomPage(ref, store, new ModifierPageFull(playerRef, itemContext));
     }
 
 }

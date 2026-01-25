@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 
-public class ItemModifier implements JsonAssetWithMap<String, ModifierAssetMap>, JsonAsset<String> {
+public class ItemModifier {
     public static final BuilderCodec<ItemModifier> CODEC = BuilderCodec.builder(ItemModifier.class, ItemModifier::new)
             .append(new KeyedCodec<>("Id", BuilderCodec.STRING), (mod, v) -> mod.id = v, mod -> mod.id)
             .add()
@@ -85,17 +85,8 @@ public class ItemModifier implements JsonAssetWithMap<String, ModifierAssetMap>,
 
     public ItemModifier(ItemModifierTemplate template) {
         this.id = template.getId();
-        this.additive = new Object2ObjectOpenHashMap<>(template.additive.size());
-
-        for (Map.Entry<String, ValueProvider> entry : template.additive.entrySet()) {
-            this.additive.put(entry.getKey(), new ValueProvider(entry.getValue()));
-        }
-
-        this.multiplicative = new Object2ObjectOpenHashMap<>(template.multiplicative.size());
-        for (Map.Entry<String, ValueProvider> entry : template.multiplicative.entrySet()) {
-            this.multiplicative.put(entry.getKey(), new ValueProvider(entry.getValue()));
-        }
-
+        this.additive = template.getAdditiveRoll();
+        this.multiplicative = template.getMultiplicativeRoll();
     }
 
     public ItemModifier clone() {

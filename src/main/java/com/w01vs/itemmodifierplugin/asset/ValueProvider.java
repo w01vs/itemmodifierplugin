@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public class ValueProvider implements Supplier<Float> {
+public class ValueProvider extends ItemModifierTemplate.ModifierRangeGroup implements Supplier<Float> {
     // Initialize as null to represent "not present"
     @Nullable private Float value = null;
     @Nullable private Float min = null;

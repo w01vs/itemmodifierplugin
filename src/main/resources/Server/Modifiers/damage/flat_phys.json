@@ -1,9 +1,14 @@
 {
-  "Id": "mod:damage:flat_phys",
   "Additive": {
     "Physical": {
-      "Value": 2.0
+      "Low":  { "Min": 2.0, "Max": 5.0 },
+      "High": { "Min": 6.0, "Max": 9.0 }
     }
   },
-  "Multiplicative": {}
+  "Multiplicative": {
+    "Physical": {
+       "Min": 0.10,
+       "Max": 0.15
+    }
+  }
 }
