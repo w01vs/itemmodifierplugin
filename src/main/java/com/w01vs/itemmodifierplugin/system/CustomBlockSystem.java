@@ -1,4 +1,4 @@
-package com.w01vs.itemmodifierplugin;
+package com.w01vs.itemmodifierplugin.system;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.dependency.Dependency;

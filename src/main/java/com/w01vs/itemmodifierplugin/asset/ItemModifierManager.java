@@ -1,19 +1,15 @@
-package com.w01vs.itemmodifierplugin;
+package com.w01vs.itemmodifierplugin.asset;
 
 import com.hypixel.hytale.assetstore.AssetRegistry;
 import com.hypixel.hytale.codec.KeyedCodec;
-import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageCalculatorSystems;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.combat.DamageCalculator;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +20,7 @@ public class ItemModifierManager {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     public static ItemModifier getRandomModifier() {
-        ItemModifier mod = AssetRegistry.getAssetStore(ItemModifier.class).getAssetMap().getAsset("flat_phys");
+        ItemModifierTemplate mod = AssetRegistry.getAssetStore(ItemModifierTemplate.class).getAssetMap().getAsset("flat_phys");
         // mod.reroll();
         return mod;
     }

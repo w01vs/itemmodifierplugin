@@ -1,0 +1,16 @@
+Button #Button {
+  LayoutMode: Left;
+  Padding: (Full: 15);
+
+  Label #Name {
+    Padding: (Horizontal: 10, Vertical: 5);
+    Style: (RenderBold: false);
+    FlexWeight: 1;
+  }
+
+  Group {
+    LayoutMode: Full;
+    Anchor: (Height: 2);
+    Background: #34c941(0.6);
+  }
+}

@@ -1,9 +1,8 @@
-package com.w01vs.itemmodifierplugin;
+package com.w01vs.itemmodifierplugin.asset;
 
 import com.hypixel.hytale.assetstore.AssetMap;
 import com.hypixel.hytale.assetstore.AssetRegistry;
 import com.hypixel.hytale.assetstore.codec.AssetCodec;
-import com.hypixel.hytale.codec.ExtraInfo;
 import com.hypixel.hytale.logger.HytaleLogger;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -16,17 +15,17 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ModifierAssetMap extends AssetMap<String, ItemModifier> {
+public class ModifierAssetMap extends AssetMap<String, ItemModifierTemplate> {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
-    private final Map<String, ItemModifier> modifiers = new Object2ObjectOpenHashMap<>();
+    private final Map<String, ItemModifierTemplate> modifiers = new Object2ObjectOpenHashMap<>();
     private final Map<String, Path> assetPaths = new Object2ObjectOpenHashMap<>();
     private final Map<String, String> assetPacks = new Object2ObjectOpenHashMap<>();
     private final Map<Integer, Set<String>> tagToKeys = new Int2ObjectOpenHashMap<>();
 
 
     @Override
-    protected void putAll(@Nonnull String packName, AssetCodec<String, ItemModifier> codec,
-                          Map<String, ItemModifier> newAssets, Map<String, Path> paths,
+    protected void putAll(@Nonnull String packName, AssetCodec<String, ItemModifierTemplate> codec,
+                          Map<String, ItemModifierTemplate> newAssets, Map<String, Path> paths,
                           Map<String, Set<String>> tagsByAsset) {
 
         this.modifiers.putAll(newAssets);
@@ -45,7 +44,7 @@ public class ModifierAssetMap extends AssetMap<String, ItemModifier> {
     }
 
     @Override
-    public @Nullable ItemModifier getAsset(String id) {
+    public @Nullable ItemModifierTemplate getAsset(String id) {
         return this.modifiers.get(id);
     }
 
@@ -55,7 +54,7 @@ public class ModifierAssetMap extends AssetMap<String, ItemModifier> {
     }
 
     @Override
-    public Map<String, ItemModifier> getAssetMap() {
+    public Map<String, ItemModifierTemplate> getAssetMap() {
         return this.modifiers;
     }
 
@@ -83,8 +82,8 @@ public class ModifierAssetMap extends AssetMap<String, ItemModifier> {
     }
 
     @Override
-    public @Nullable ItemModifier getAsset(@Nonnull String packKey, String key) {
-        ItemModifier asset = this.modifiers.get(key);
+    public @Nullable ItemModifierTemplate getAsset(@Nonnull String packKey, String key) {
+        ItemModifierTemplate asset = this.modifiers.get(key);
         return (asset != null && packKey.equals(this.assetPacks.get(key))) ? asset : null;
     }
 

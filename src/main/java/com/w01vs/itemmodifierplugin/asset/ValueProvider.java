@@ -1,6 +1,5 @@
-package com.w01vs.itemmodifierplugin;
+package com.w01vs.itemmodifierplugin.asset;
 
-import com.google.protobuf.Value;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.math.random.RandomExtra;

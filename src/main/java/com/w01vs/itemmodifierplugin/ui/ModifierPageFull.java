@@ -1,11 +1,10 @@
-package com.w01vs.itemmodifierplugin;
+package com.w01vs.itemmodifierplugin.ui;
 
+import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.choices.ChoiceBasePage;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.choices.ChoiceElement;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.itemrepair.ItemRepairElement;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.itemrepair.RepairItemInteraction;
 import com.hypixel.hytale.server.core.inventory.ItemContext;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
@@ -13,13 +12,14 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.w01vs.itemmodifierplugin.asset.ItemModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-public class ModifierPage extends ChoiceBasePage {
-    public ModifierPage(@Nonnull PlayerRef playerRef, @Nonnull ItemContainer itemContainer, double repairPenalty) {
-        super(playerRef, getItemElements(itemContainer, repairPenalty), "ModifyItemPage.ui");
+public class ModifierPageFull extends ChoiceBasePage {
+    public ModifierPageFull(@Nonnull PlayerRef playerRef, @Nonnull ItemStack itemStack) {
+        super(playerRef, getItemElements(itemStack), "ModifierPage.ui");
     }
 
     @Override
@@ -36,17 +36,14 @@ public class ModifierPage extends ChoiceBasePage {
     }
 
     @Nonnull
-    protected static ChoiceElement[] getItemElements(@Nonnull ItemContainer itemContainer, double repairPenalty) {
+    protected static ChoiceElement[] getItemElements(@Nonnull ItemStack itemStack) {
         List<ChoiceElement> elements = new ObjectArrayList<>();
-
-        for (short slot = 0; slot < itemContainer.getCapacity(); slot++) {
-            ItemStack itemStack = itemContainer.getItemStack(slot);
-            if (!ItemStack.isEmpty(itemStack) && !itemStack.isUnbreakable() && itemStack.getMaxDurability() > 0) {
-                ItemContext itemContext = new ItemContext(itemContainer, slot, itemStack);
-                elements.add(new ModifyItemElement(itemStack, new ModifyItemInteraction(itemContext, repairPenalty)));
+        ItemModifier[] modifiers = itemStack.getFromMetadataOrNull(new KeyedCodec<>(ItemModifier.codecKey, ItemModifier.ARRAY_CODEC));
+        if(modifiers != null) {
+            for(ItemModifier mod : modifiers) {
+               elements.add(new ModifierElement(mod));
             }
         }
-
         return elements.toArray(ChoiceElement[]::new);
     }
 }
