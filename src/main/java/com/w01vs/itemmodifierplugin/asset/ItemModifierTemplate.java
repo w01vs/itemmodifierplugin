@@ -10,6 +10,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.map.MapCodec;
 import com.hypixel.hytale.common.util.MapUtil;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.math.random.RandomExtra;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.nio.file.WatchEvent;
@@ -98,10 +99,9 @@ public class ItemModifierTemplate implements JsonAssetWithMap<String, ModifierAs
                 .append(new KeyedCodec<>("Max", Codec.FLOAT), (r, v) -> r.max = v, r -> r.max)
                 .add()
                 .build();
-
         public float roll() {
             if (min >= max) return min;
-            return min + (float) (Math.random() * (max - min));
+            return RandomExtra.randomRange(min, max);
         }
     }
 }

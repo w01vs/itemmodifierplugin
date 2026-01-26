@@ -1,7 +1,10 @@
 package com.w01vs.itemmodifierplugin;
 
+import com.hypixel.hytale.assetstore.AssetRegistry;
+import com.hypixel.hytale.assetstore.AssetStore;
 import com.hypixel.hytale.common.plugin.PluginManifest;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.damage.DamageDataComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageModule;
@@ -40,5 +43,12 @@ public class ItemModifierPlugin extends JavaPlugin {
         this.getEntityStoreRegistry().registerSystem(new CustomBlockSystem());
         this.getEntityStoreRegistry().registerSystem(new DamageModifier());
         this.getAssetRegistry().register(new ModifierAssetStore());
+
+        // do in loadedassetsevent
+//        var reg = AssetRegistry.getAssetStore(Item.class).getAssetMap();
+//        reg.getAssetMap().forEach((id, item) -> {
+//            item.getArmor().getDamageClassEnhancement().clear();
+//            item.getArmor().getDamageResistanceValues().clear();
+//        });
     }
 }
